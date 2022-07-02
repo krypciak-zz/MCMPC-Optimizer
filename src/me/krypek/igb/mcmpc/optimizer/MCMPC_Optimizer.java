@@ -27,7 +27,7 @@ public class MCMPC_Optimizer {
 			newFunctions[i] = new DatapackFunction(oldFunc.submodule(), oldFunc.name(), optimizeFunction(oldFunc.contents()));
 		}
 		Datapack newDatapack = new Datapack("MCMPCv7O", oldDatapack.packFormat, "MCMPCv7 Optimized", newFunctions);
-		System.out.println(newDatapack);
+		newDatapack.parse("/home/krypek/Games/minecraft/instances/mcmulator/.minecraft/saves/MCMulator_v7/datapacks/");
 	}
 
 	private static boolean deleteTellraw;
