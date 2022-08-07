@@ -1,5 +1,6 @@
 package me.krypek.igb.mcmpc.optimizer;
 
+import java.io.File;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,11 +16,15 @@ public class MCMPC_Optimizer {
 	public static void main(String[] args) {
 		//@f:off
 		ParsedData pd = new ParserBuilder()
-				.add("p", "path", true, false, ArgType.String, "Path to a MCMPC datapack. Example: ~/.minecraft/saves/MCMulator_v7/datapack/MCMPCv7")
+				.add("p", "path", true, false, ArgType.String, "Path to a MCMPC datapack. Example: ~/.minecraft/saves/MCMulator_v7/datapacks/MCMPCv7")
 				.parse(args);
 		//@f:on
 		final String path = pd.getString("p");
-		Datapack oldDatapack = Datapack.getDatapackFromFolder(path);
+		parse(path);
+	}
+
+	public static void parse(String oldPath) {
+		Datapack oldDatapack = Datapack.getDatapackFromFolder(oldPath);
 
 		DatapackFunction[] newFunctions = new DatapackFunction[oldDatapack.functions.length];
 		for (int i = 0; i < oldDatapack.functions.length; i++) {
@@ -27,7 +32,7 @@ public class MCMPC_Optimizer {
 			newFunctions[i] = new DatapackFunction(oldFunc.submodule(), oldFunc.name(), optimizeFunction(oldFunc.contents()));
 		}
 		Datapack newDatapack = new Datapack("MCMPCv7O", oldDatapack.packFormat, "MCMPCv7 Optimized", newFunctions);
-		newDatapack.parse("/home/krypek/Games/minecraft/instances/mcmulator/.minecraft/saves/MCMulator_v7/datapacks/");
+		newDatapack.parse(new File(oldPath).getParent());
 	}
 
 	private static boolean deleteTellraw;
